@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Photos</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <script src="/jquery.min.js"></script>
+    <script src="/jquery.jscroll.min.js"></script>
+    <script type="text/javascript">
+		$( document ).ready(function()
+		{
+			if($('.jscroll').length)
+			{
+				$('.jscroll').jscroll(
+				{
+					contentSelector: '#photos-list',
+					nextSelector: 'a.next',
+					padding: 500,
+					loadingHtml: '<div align="center"><img src="/loading.gif" alt="Loading" /> Loading...</div>'
+				});
+			}
+
+			scrollCounter = -1;
+			$('body').keypress(function(evt)
+			{
+				var n = $(".photo").length;
+
+				switch (evt.key)
+				{
+					case 'j': scrollCounter++; break;
+					case 'k': scrollCounter--; break;
+					case 'g': scrollCounter = -1; break;
+					case 'G': scrollCounter = n-1; break;
+					default: ;
+				}
+
+				scrollCounter = Math.max(-1, scrollCounter);
+				scrollCounter = Math.min(n-1, scrollCounter);
+
+				var top = scrollCounter == -1 ? 0 : $(".photo").eq(scrollCounter).offset().top;
+				$([document.documentElement, document.body]).animate(
+				{
+					scrollTop: top
+				}, 0);
+			});
+		});
+	</script>
+</head>
+<body>
+    <div class="maincontent">
+        <div th:replace="fragments/penguin :: penguin-sunglasses" />
+        <div id="spacer">&nbsp;</div>
+        <div class="clear"></div>
+        <a th:href="@{/}">&lt;&lt; back</a>
+        <section class="content">
+            <h2>Photos</h2>
+            <p th:utext="${textPhotos}"></p>
+            <hr />
+            <div id="photos-list" class="jscroll">
+                <div class="photo" th:each="photo : ${photos}">
+                    <img th:src="@{/photos/get/} + ${photo.fileName}" th:alt="${photo.description}" />
+                    <br />
+                    <span th:utext="${#temporals.format(photo.date, 'LLLL d, yyyy')}"></span> — <span th:utext="${photo.description}"></span>
+                    <br />
+                </div>
+                <div th:if="${nextPage}" class="pagination">
+                    <a th:href="@{/photos/{page}(page=${nextPage})}" class="next">&nbsp;</a>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

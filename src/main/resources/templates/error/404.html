@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Error</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+<div class="maincontent">
+    <div th:replace="fragments/penguin :: penguin-up-side-down" />
+    <div id="spacer">&nbsp;</div>
+    <div class="clear"></div>
+    <section class="content">
+        <p>Sorry, the requested resource could not be found :(</p>
+        <p><a th:href="@{/}">&lt;&lt; back</a></p>
+    </section>
+</div>
+</body>
+</html>

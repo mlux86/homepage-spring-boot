@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Markus Lux, Frankfurt am Main</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+    <div class="maincontent">
+        <div th:replace="fragments/penguin :: penguin" />
+        <div id="spacer">&nbsp;</div>
+        <div class="clear"></div>
+        <section class="content">
+            <span th:utext="${textMain}">Content</span>
+        </section>
+    </div>
+</body>
+</html>

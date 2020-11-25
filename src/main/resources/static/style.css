@@ -1,0 +1,56 @@
+html {
+  overflow-y: scroll;
+}
+
+body {
+    margin-left: 15px;
+    font-family: Monospace;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.maincontent {
+    max-width: 700px;
+    margin: auto;
+    border-left: 1px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.clear {
+    clear: both;
+}
+
+.photo {
+    padding: 50px 25px;
+    border-bottom: 1px dotted #aaa;
+    text-align: center;
+}
+
+.photo img {
+    width: 650px;
+}
+
+div.image table {
+    margin: 0 auto;
+}
+
+div.image caption {
+    font-size: 12px;
+}
+
+.penguin {
+    float: left;
+    width: 200px;
+}
+
+#spacer {
+    float: left;
+    width: 300px;
+}
