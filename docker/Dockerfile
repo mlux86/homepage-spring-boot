@@ -11,3 +11,4 @@ RUN ./mvnw package
 WORKDIR target
 
 ENTRYPOINT ["java", "-Dspring.datasource.url=jdbc:sqlite:/db", "-jar", "homepage-1.0.0.jar"]
+

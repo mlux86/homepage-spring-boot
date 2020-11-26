@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+    nginx:
+        image: nginx:1.19
+        restart: always
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ./nginx/conf.d:/etc/nginx/conf.d
+            - ./certbot/conf:/etc/letsencrypt
+            - ./certbot/www:/var/www/certbot
+        depends_on:
+            - app
+
+    app:
+        build: "./"
+        image: homepage-spring
+        volumes:
+            - ./l0x.db:/db
+        expose:
+            - "8080"
+
+    certbot:
+        image: certbot/certbot
+        volumes:
+            - ./certbot/conf:/etc/letsencrypt
+            - ./certbot/www:/var/www/certbot
+        # init container using
+        # https://github.com/wmnnd/nginx-certbot/blob/master/init-letsencrypt.sh
+
