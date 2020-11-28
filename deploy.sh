@@ -1,3 +1,5 @@
-#!/bin/bash
+#!/bin/bash -e
 
-./mvnw package && docker-compose build app
+./mvnw package
+docker-compose up -d --build --force-recreate 
+
