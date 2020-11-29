@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Data
 public class TextContentNotFoundException extends RuntimeException
 {
+
     @NonNull
     private String contentKey;
+
 }

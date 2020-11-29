@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Data
 public class PhotoNotFoundException extends RuntimeException
 {
+
     @NonNull
     private String fileName;
+
 }

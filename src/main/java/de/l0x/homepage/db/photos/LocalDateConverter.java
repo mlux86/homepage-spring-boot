@@ -20,4 +20,5 @@ public class LocalDateConverter implements AttributeConverter<LocalDate, String>
     {
         return LocalDate.parse(s, FORMATTER);
     }
+
 }
