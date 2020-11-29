@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -34,8 +35,9 @@ class PhotoRepositoryTest
         Photo p2 = new Photo("another description", LocalDate.parse("1990-01-01"), new byte[12], fileName2);
         entityManager.persist(p1);
         entityManager.persist(p2);
-        assertThat(repository.findByFileName(fileName1)).isEqualTo(p1);
-        assertThat(repository.findByFileName(fileName2)).isEqualTo(p2);
-        assertNull(repository.findByFileName("non_extant.jpg"));
+        assertThat(repository.findByFileName(fileName1).get()).isEqualTo(p1);
+        assertThat(repository.findByFileName(fileName2).get()).isEqualTo(p2);
+        assertThat(repository.findByFileName("non_extant.jpg")).isEqualTo(Optional.empty());
     }
+
 }

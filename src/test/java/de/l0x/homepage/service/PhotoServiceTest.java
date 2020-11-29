@@ -18,6 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -85,7 +86,7 @@ class PhotoServiceTest
     {
         photos.forEach(p ->
         {
-            Mockito.when(repository.findByFileName(p.getFileName())).thenReturn((de.l0x.homepage.db.photos.Photo) p);
+            Mockito.when(repository.findByFileName(p.getFileName())).thenReturn(Optional.of(p));
         });
 
         String fileName = fileNameFromNumber(7);
@@ -97,4 +98,5 @@ class PhotoServiceTest
             service.byFileName("non_extant.jpg");
         });
     }
+
 }

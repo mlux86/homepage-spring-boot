@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -51,7 +53,8 @@ class PhotoControllerTest
         byte[] imageData = new byte[42];
         Photo photo = Mockito.mock(Photo.class);
         Mockito.when(photo.getImage()).thenReturn(imageData);
-        Mockito.when(photoRepository.findByFileName(ArgumentMatchers.isA(String.class))).thenReturn(photo);
+        Mockito.when(photoRepository.findByFileName(ArgumentMatchers.isA(String.class)))
+                .thenReturn(Optional.of(photo));
 
         mockMvc.perform(get("/photos/get/test.jpg"))
                 .andExpect(status().isOk())
@@ -62,7 +65,8 @@ class PhotoControllerTest
     @Test
     void whenPhotoNotFound_thenHttpNotFound() throws Exception
     {
-        Mockito.when(photoRepository.findByFileName(ArgumentMatchers.isA(String.class))).thenReturn(null);
+        Mockito.when(photoRepository.findByFileName(ArgumentMatchers.isA(String.class))).thenReturn(Optional.empty());
         mockMvc.perform(get("/photos/get/test.jpg")).andExpect(status().isNotFound());
     }
+
 }

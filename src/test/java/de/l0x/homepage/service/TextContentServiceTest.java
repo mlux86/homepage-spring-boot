@@ -12,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -32,7 +34,7 @@ class TextContentServiceTest
     @BeforeEach
     void setUp()
     {
-        Mockito.when(repository.findByKey(tc.getKey())).thenReturn(tc);
+        Mockito.when(repository.findByKey(tc.getKey())).thenReturn(Optional.of(tc));
     }
 
     @Test
@@ -47,4 +49,5 @@ class TextContentServiceTest
             service.htmlByKey("non_extant_key");
         });
     }
+
 }

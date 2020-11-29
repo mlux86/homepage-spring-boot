@@ -7,7 +7,6 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,12 +20,12 @@ public class PhotoService
     @Autowired
     private PhotoRepository repository;
 
-    private Sort sort = Sort.by("date").descending();
-
     @Cacheable("photoPages")
     public PhotoPage pageByDate(int page, int size)
     {
-        val pPage = repository.findAll(PageRequest.of(page, size, sort));
+        val pPage = repository.findAll(
+                PageRequest.of(page, size, Photo.SORT_BY_DATE_DESC)
+        );
 
         if (pPage != null)
         {
@@ -44,12 +43,7 @@ public class PhotoService
     @Cacheable("singlePhotos")
     public Photo byFileName(String fileName) throws PhotoNotFoundException
     {
-        val photo = repository.findByFileName(fileName);
-        if (photo == null)
-        {
-            throw new PhotoNotFoundException(fileName);
-        }
-        return photo;
+        return repository.findByFileName(fileName).orElseThrow(() -> new PhotoNotFoundException(fileName));
     }
 
 }

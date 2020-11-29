@@ -12,7 +12,7 @@ public class PhotoPage
 
     @NonNull
     private List<Photo> photos;
-    
+
     @NonNull
     private Optional<Integer> nextPage;
 

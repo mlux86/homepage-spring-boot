@@ -2,9 +2,11 @@ package de.l0x.homepage.db.photos;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Optional;
+
 public interface PhotoRepository extends PagingAndSortingRepository<Photo, Integer>
 {
 
-    Photo findByFileName(String fileName);
+    Optional<Photo> findByFileName(String fileName);
 
 }

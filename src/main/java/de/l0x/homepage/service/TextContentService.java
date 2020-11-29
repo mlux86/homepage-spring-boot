@@ -19,11 +19,7 @@ public class TextContentService
     @Cacheable("textContent")
     public String htmlByKey(String key)
     {
-        val md = repository.findByKey(key);
-        if (md == null)
-        {
-            throw new TextContentNotFoundException(key);
-        }
+        val md = repository.findByKey(key).orElseThrow(() -> new TextContentNotFoundException(key));
         return markdownService.markdownToHTML(md.getText());
     }
 

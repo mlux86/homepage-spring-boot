@@ -2,9 +2,11 @@ package de.l0x.homepage.db.textcontent;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface TextContentRepository extends CrudRepository<TextContent, String>
 {
 
-    TextContent findByKey(String key);
+    Optional<TextContent> findByKey(String key);
 
 }

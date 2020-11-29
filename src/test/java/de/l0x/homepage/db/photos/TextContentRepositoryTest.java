@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -34,9 +36,10 @@ class TextContentRepositoryTest
         entityManager.persist(tc1);
         entityManager.persist(tc2);
 
-        assertThat(repository.findByKey("key1")).isEqualTo(tc1);
-        assertThat(repository.findByKey("key2")).isEqualTo(tc2);
+        assertThat(repository.findByKey("key1").get()).isEqualTo(tc1);
+        assertThat(repository.findByKey("key2").get()).isEqualTo(tc2);
 
-        assertNull(repository.findByKey("wrong_key"));
+        assertThat(repository.findByKey("wrong_key")).isEqualTo(Optional.empty());
     }
+
 }

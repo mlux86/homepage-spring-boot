@@ -38,4 +38,5 @@ class CacheControllerTest
         assertThat(cacheManager.getCache("cache1").get("item")).isNull();
         assertThat(cacheManager.getCache("cache2").get("item")).isNull();
     }
+
 }

@@ -16,4 +16,5 @@ class MarkdownServiceTest
         String html = mdService.markdownToHTML(md);
         assertThat(html.trim()).isEqualTo("<p><em>line1</em>\n<strong>line2</strong></p>");
     }
+
 }

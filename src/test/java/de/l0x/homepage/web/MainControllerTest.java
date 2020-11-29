@@ -37,4 +37,5 @@ class MainControllerTest
                 .andExpect(content().string(containsString(
                         contentService.htmlByKey(MainController.KEY_TEXT_MAIN))));
     }
+
 }
