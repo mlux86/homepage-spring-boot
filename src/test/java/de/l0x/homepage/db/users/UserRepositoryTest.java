@@ -1,7 +1,5 @@
-package de.l0x.homepage.db.photos;
+package de.l0x.homepage.db.users;
 
-import de.l0x.homepage.db.textcontent.TextContent;
-import de.l0x.homepage.db.textcontent.TextContentRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,28 +15,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
-class TextContentRepositoryTest
+class UserRepositoryTest
 {
 
     @Autowired
     TestEntityManager entityManager;
 
     @Autowired
-    TextContentRepository repository;
+    UserRepository repository;
 
     @Test
     void findByFileName()
     {
-        TextContent tc1 = new TextContent("key1", "My first text.");
-        TextContent tc2 = new TextContent("key2", "My second text.");
+        User user = new User("homerSimpson", "password123");
+        entityManager.persist(user);
 
-        entityManager.persist(tc1);
-        entityManager.persist(tc2);
-
-        assertThat(repository.findByKey("key1").get()).isEqualTo(tc1);
-        assertThat(repository.findByKey("key2").get()).isEqualTo(tc2);
-
-        assertThat(repository.findByKey("wrong_key")).isEqualTo(Optional.empty());
+        assertThat(repository.findByUserName("homerSimpson")).isPresent();
+        assertThat(repository.findByUserName("homerSimpson").get()).isEqualTo(user);
+        assertThat(repository.findByUserName("nonExtant")).isEqualTo(Optional.empty());
     }
 
 }
