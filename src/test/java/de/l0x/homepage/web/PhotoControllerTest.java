@@ -1,7 +1,9 @@
 package de.l0x.homepage.web;
 
 import de.l0x.homepage.db.photos.Photo;
-import de.l0x.homepage.db.photos.PhotoRepository;
+import de.l0x.homepage.logic.PhotoPage;
+import de.l0x.homepage.service.PhotoNotFoundException;
+import de.l0x.homepage.service.PhotoService;
 import de.l0x.homepage.service.TextContentService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -14,9 +16,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Optional;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,7 +35,7 @@ class PhotoControllerTest
     MockMvc mockMvc;
 
     @MockBean
-    PhotoRepository photoRepository;
+    PhotoService photoService;
 
     @MockBean
     TextContentService contentService;
@@ -39,7 +43,9 @@ class PhotoControllerTest
     @Test
     void whenMainRequested_thenContainsText() throws Exception
     {
+        PhotoPage photos = PhotoPage.builder().photos(List.of()).build();
         Mockito.when(contentService.htmlByKey(PhotoController.KEY_TEXT_MAIN)).thenReturn("dummy");
+        Mockito.when(photoService.pageByDate(anyInt(), anyInt())).thenReturn(photos);
 
         mockMvc.perform(get("/photos"))
                 .andExpect(status().isOk())
@@ -53,8 +59,8 @@ class PhotoControllerTest
         byte[] imageData = new byte[42];
         Photo photo = Mockito.mock(Photo.class);
         Mockito.when(photo.getImage()).thenReturn(imageData);
-        Mockito.when(photoRepository.findByFileName(ArgumentMatchers.isA(String.class)))
-                .thenReturn(Optional.of(photo));
+        Mockito.when(photoService.byFileName(ArgumentMatchers.isA(String.class)))
+                .thenReturn(photo);
 
         mockMvc.perform(get("/photos/get/test.jpg"))
                 .andExpect(status().isOk())
@@ -65,7 +71,7 @@ class PhotoControllerTest
     @Test
     void whenPhotoNotFound_thenHttpNotFound() throws Exception
     {
-        Mockito.when(photoRepository.findByFileName(ArgumentMatchers.isA(String.class))).thenReturn(Optional.empty());
+        Mockito.when(photoService.byFileName(any())).thenThrow(new PhotoNotFoundException(""));
         mockMvc.perform(get("/photos/get/test.jpg")).andExpect(status().isNotFound());
     }
 

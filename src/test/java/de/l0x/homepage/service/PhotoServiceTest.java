@@ -73,12 +73,12 @@ class PhotoServiceTest
 
         PhotoPage pp = service.pageByDate(0, NUM_PHOTOS_TEST);
 
-        assertThat(pp.getNextPage().isPresent()).isTrue();
-        assertThat(pp.getNextPage().get()).isEqualTo(1);
+        assertThat(pp.hasNexPage()).isTrue();
+        assertThat(pp.getNextPage()).isEqualTo(1);
         assertThat(pp.getPhotos().size()).isEqualTo(NUM_PHOTOS_TEST);
 
         PhotoPage pp2 = service.pageByDate(numPages - 1, NUM_PHOTOS_TEST);
-        assertThat(pp2.getNextPage().isPresent()).isFalse();
+        assertThat(pp2.hasNexPage()).isFalse();
     }
 
     @Test

@@ -1,19 +1,23 @@
 package de.l0x.homepage.logic;
 
-import lombok.Data;
+import lombok.Builder;
 import lombok.NonNull;
+import lombok.Value;
 
 import java.util.List;
-import java.util.Optional;
 
-@Data
+@Value
+@Builder
 public class PhotoPage
 {
 
     @NonNull
-    private List<Photo> photos;
+    List<Photo> photos;
 
-    @NonNull
-    private Optional<Integer> nextPage;
+    Integer nextPage;
+
+    public boolean hasNexPage() {
+        return nextPage != null;
+    }
 
 }

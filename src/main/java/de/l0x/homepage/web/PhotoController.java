@@ -3,7 +3,6 @@ package de.l0x.homepage.web;
 import de.l0x.homepage.service.PhotoService;
 import de.l0x.homepage.service.TextContentService;
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -12,36 +11,38 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Optional;
-
 @Controller
 public class PhotoController
 {
 
     protected static final String KEY_TEXT_MAIN = "photos";
 
-    @Autowired
-    TextContentService contentService;
+    private final TextContentService contentService;
 
-    @Autowired
-    private PhotoService photoService;
+    private final PhotoService photoService;
 
-    @Value("${photos.pageSize}")
-    private Integer pageSize;
+    private final Integer pageSize;
 
-    @GetMapping({"/photos", "/photos/{maybePage}"})
-    public String photos(@PathVariable Optional<Integer> maybePage, Model model)
+    public PhotoController(PhotoService photoService,
+                           TextContentService contentService,
+                           @Value("${photos.pageSize}") Integer pageSize) {
+        this.contentService = contentService;
+        this.photoService = photoService;
+        this.pageSize = pageSize;
+    }
+
+    @GetMapping({"/photos", "/photos/{page}"})
+    public String photos(@PathVariable(value = "page", required = false) Integer page, Model model)
     {
-        val page = maybePage.orElse(0);
+        if (page == null) {
+            page = 0;
+        }
 
         val fetchedPage = photoService.pageByDate(page, pageSize);
         model.addAttribute("photos", fetchedPage.getPhotos());
-        fetchedPage.getNextPage().ifPresent(next ->
-        {
-            model.addAttribute("nextPage", next);
-        });
-
+        model.addAttribute("nextPage", fetchedPage.getNextPage());
         model.addAttribute("textPhotos", contentService.htmlByKey(KEY_TEXT_MAIN));
+
         return "photos";
     }
 
@@ -49,8 +50,7 @@ public class PhotoController
     public @ResponseBody
     byte[] photo(@PathVariable String fileName)
     {
-        val photo = photoService.byFileName(fileName);
-        return photo.getImage();
+        return photoService.byFileName(fileName).getImage();
     }
 
 }

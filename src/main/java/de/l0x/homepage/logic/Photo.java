@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public interface Photo
 {
 
-    public final Sort SORT_BY_DATE_DESC = Sort.by("date").descending();
+    Sort SORT_BY_DATE_DESC = Sort.by("date").descending();
 
     String getDescription();
 

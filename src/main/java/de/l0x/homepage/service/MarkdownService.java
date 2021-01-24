@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class MarkdownService
 {
 
-    private Parser mdParser;
-    private HtmlRenderer htmlRenderer;
+    private final Parser mdParser;
+    private final HtmlRenderer htmlRenderer;
 
     public MarkdownService()
     {
