@@ -19,6 +19,8 @@ services:
         image: homepage-spring
         volumes:
             - ./l0x.db:/db
+            - ./GeoLite2-City.mmdb:/geo
+            - ./log.tsv:/log
         expose:
             - "8080"
 

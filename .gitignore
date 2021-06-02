@@ -34,5 +34,6 @@ build/
 
 ### Custom ###
 *.db
+*.tsv
 
 .DS_Store
